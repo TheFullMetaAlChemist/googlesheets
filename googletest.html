@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Google Sheets Form Submission</title>
+</head>
+<body>
+  <h1>Submit Data to Google Sheets</h1>
+  <form id="myForm">
+    <!-- The "name" attribute here should match what your Google Apps Script expects -->
+    <input type="text" name="data" placeholder="Enter some data" required>
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    // Replace the URL below with your actual Google Web App URL
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzz4pkiUZcQ7huwed6tHK8Rzvi9Hy1gno6aMlk8Urvra6DjEhuMl6K4qsFYwVNoBTbm/exec';
+    
+    const form = document.getElementById('myForm');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();  // Prevent the form from reloading the page
+      
+      const formData = new FormData(form);
+
+      // Send the form data via POST to the Google Apps Script web app
+      fetch(scriptURL, {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.text())
+      .then(result => {
+        console.log('Success:', result);
+        alert('Data submitted successfully!');
+        form.reset();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('There was an error submitting the data.');
+      });
+    });
+  </script>
+</body>
+</html>
